@@ -23,33 +23,35 @@ public class ContactResource {
         this.mapper = mapper;
     }
 
-    @PostMapping()
-    public ResponseEntity<ContactResponse> create(@RequestBody ContactRequest request) {
+    @PostMapping("/{userId}")
+    public ResponseEntity<ContactResponse> create(@PathVariable UUID userId,
+                                                  @RequestBody ContactRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
 
         var savedDomainObj = service
-                .create(mappedDomainObj);
+                .create(userId, mappedDomainObj);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(mapper.toResponse(savedDomainObj));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ContactResponse> getById(@PathVariable UUID id) {
+    @GetMapping("/{contactId}/{userId}")
+    public ResponseEntity<ContactResponse> getById(@PathVariable UUID contactId,
+                                                   @PathVariable UUID userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(id));
+                .toResponse(service.getById(userId, contactId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(mappedResponse);
     }
 
-    @GetMapping
-    public List<ContactResponse> getAll() {
+    @GetMapping("/{userId}")
+    public List<ContactResponse> getAll(@PathVariable UUID userId) {
         var domainObjs = service
-                .getAll()
+                .getAll(userId)
                 .spliterator();
 
         return StreamSupport.stream(domainObjs, false)
@@ -57,23 +59,25 @@ public class ContactResource {
                 .toList();
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<ContactResponse> updateById(@PathVariable UUID id,
+    @PutMapping("/{contactId}/{userId}")
+    public ResponseEntity<ContactResponse> updateById(@PathVariable UUID contactId,
+                                                      @PathVariable UUID userId,
                                                       @RequestBody ContactRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);
 
         var updatedDomainObj = service
-                .updateById(id, mapperDomainObj);
+                .updateById(userId, contactId, mapperDomainObj);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(mapper.toResponse(updatedDomainObj));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID id) {
-        service.deleteById(id);
+    @DeleteMapping("/{contactId}/{userId}")
+    public ResponseEntity<?> deleteById(@PathVariable UUID contactId,
+                                        @PathVariable UUID userId) {
+        service.deleteById(userId, contactId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
