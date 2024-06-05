@@ -2,6 +2,7 @@ package com.dotsageiv.HomeConnect.infrastructure.gateway.services;
 
 import com.dotsageiv.HomeConnect.core.domain.entities.Contact;
 import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.ContactMapper;
+import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.HomeConnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.HomeConnect.infrastructure.persistence.repositories.ContactRepository;
 
@@ -10,58 +11,89 @@ import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 public class ContactService {
-    private final ContactMapper mapper;
-    private final ContactRepository repository;
+    private final UserMapper userMapper;
+    private final UserService userService;
+    private final ContactMapper contactMapper;
+    private final ContactRepository contactRepository;
 
-    public ContactService(ContactMapper mapper, ContactRepository repository) {
-        this.mapper = mapper;
-        this.repository = repository;
+    public ContactService(UserMapper userMapper,
+                          UserService userService,
+                          ContactMapper contactMapper,
+                          ContactRepository contactRepository) {
+        this.userMapper = userMapper;
+        this.userService = userService;
+        this.contactMapper = contactMapper;
+        this.contactRepository = contactRepository;
     }
 
-    public Contact create(Contact domainObj) {
-        var mappedEntity = mapper
+    public Contact create(UUID userId, Contact domainObj) {
+        var mappedContactEntity = contactMapper
                 .toEntity(domainObj);
 
-        return mapper.toDomainObj(repository
-                .save(mappedEntity));
+        var mappedUserEntity = userMapper
+                .toEntity(userService.getById(userId));
+
+        mappedUserEntity.setId(userId);
+        mappedContactEntity.setUserEntity(mappedUserEntity);
+
+        return contactMapper.toDomainObj(contactRepository
+                .save(mappedContactEntity));
     }
 
-    public List<Contact> getAll() {
-        var entities = repository
-                .findAll()
+    public List<Contact> getAll(UUID userId) {
+        var contactEntities = contactRepository
+                .findByUserEntityId(userId)
                 .spliterator();
 
-        return StreamSupport.stream(entities, false)
-                .map(mapper::toDomainObj)
+        return StreamSupport.stream(contactEntities, false)
+                .map(contactMapper::toDomainObj)
                 .toList();
     }
 
-    public Contact getById(UUID id) {
-        var existEntity = repository
-                .findById(id)
+    public Contact getById(UUID userId, UUID contactId) {
+        var existContactEntity = contactRepository
+                .findById(contactId)
                 .orElseThrow(() ->
-                        new EntityNotFoundNotification("Usuário não existe!"));
+                        new EntityNotFoundNotification("Contato não existe!"));
 
-        return mapper.toDomainObj(existEntity);
+        var mappedUserEntity = userMapper
+                .toEntity(userService.getById(userId));
+
+        mappedUserEntity.setId(userId);
+        mappedUserEntity.getContacts().add(existContactEntity);
+
+        return contactMapper.toDomainObj(
+                mappedUserEntity.getContacts().stream()
+                        .filter(cId -> cId.getId().equals(existContactEntity.getId()))
+                        .findFirst()
+                        .get());
     }
 
-    public Contact updateById(UUID id, Contact domainObj) {
-        var mappedEntity = mapper
-                .toEntity(getById(id));
+    public Contact updateById(UUID userId, UUID contactId, Contact domainObj) {
+        var mappedContactEntity = contactMapper
+                .toEntity(getById(userId, contactId));
 
-        mappedEntity.setId(id);
-        mappedEntity.setEmail(domainObj.email());
-        mappedEntity.setPhoneNumber(domainObj.phoneNumber());
+        var mappedUserEntity = userMapper
+                .toEntity(userService.getById(userId));
 
-        return mapper.toDomainObj(repository
-                .save(mappedEntity));
+        mappedContactEntity.setId(contactId);
+        mappedUserEntity.setId(userId);
+
+        mappedContactEntity.setEmail(domainObj.email());
+        mappedContactEntity.setPhoneNumber(domainObj.phoneNumber());
+
+        mappedContactEntity.setUserEntity(mappedUserEntity);
+        mappedUserEntity.getContacts().add(mappedContactEntity);
+
+        return contactMapper.toDomainObj(contactRepository
+                .save(mappedContactEntity));
     }
 
-    public void deleteById(UUID id) {
-        var mappedEntity = mapper
-                .toEntity(getById(id));
+    public void deleteById(UUID userId, UUID contactId) {
+        var mappedContactEntity = contactMapper
+                .toEntity(getById(userId, contactId));
 
-        mappedEntity.setId(id);
-        repository.deleteById(mappedEntity.getId());
+        mappedContactEntity.setId(contactId);
+        contactRepository.deleteById(mappedContactEntity.getId());
     }
 }
