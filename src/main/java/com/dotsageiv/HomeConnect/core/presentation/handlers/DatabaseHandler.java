@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class DatabaseHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<List<String>> userDataIntegrityViolation(DataIntegrityViolationException ex) {
-        var uniqueFields = Arrays.asList("username", "cpf");
+    public ResponseEntity<List<String>> dataIntegrityViolation(DataIntegrityViolationException ex) {
+        var uniqueFields = Arrays.asList("username", "cpf", "email");
 
         var errorMessages = uniqueFields.stream()
                 .filter(ex.getMessage()::contains)
