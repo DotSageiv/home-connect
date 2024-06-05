@@ -40,6 +40,9 @@ public class UserEntity implements Serializable {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private Set<ContactEntity> contacts = new HashSet<>();
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private Set<AddressEntity> addresses = new HashSet<>();
+
     public UserEntity() {}
 
     public UserEntity(String cpf, String fullName,
@@ -94,6 +97,9 @@ public class UserEntity implements Serializable {
         return contacts;
     }
 
+    public Set<AddressEntity> getAddresses() {
+        return addresses;
+    }
 
     @Override
     public boolean equals(Object o) {
