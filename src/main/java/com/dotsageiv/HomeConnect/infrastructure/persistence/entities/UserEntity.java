@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "USERS")
@@ -35,12 +37,13 @@ public class UserEntity implements Serializable {
     @Size(max = 10, message = "A senha deve conter pelo menos 10 caracteres")
     private String password;
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private Set<ContactEntity> contacts = new HashSet<>();
+
     public UserEntity() {}
 
-    public UserEntity(String cpf,
-                      String fullName,
-                      String username,
-                      String password) {
+    public UserEntity(String cpf, String fullName,
+                      String username, String password) {
         this.cpf = cpf;
         this.fullName = fullName;
         this.username = username;
@@ -86,6 +89,11 @@ public class UserEntity implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<ContactEntity> getContacts() {
+        return contacts;
+    }
+
 
     @Override
     public boolean equals(Object o) {

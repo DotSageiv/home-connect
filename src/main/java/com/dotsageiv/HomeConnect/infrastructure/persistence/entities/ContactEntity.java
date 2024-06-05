@@ -21,10 +21,15 @@ public class ContactEntity implements Serializable {
     @NotBlank(message = "O email é obrigatório.")
     private String email;
 
-    @Size(min = 11, max = 13, message = "O número de telefone deve possui entre 11 ou 13 caracteres.")
+    @Size(min = 11, max = 13,
+            message = "O número de telefone deve possui entre 11 ou 13 caracteres.")
     @Column(nullable = false, length = 13)
     @NotBlank(message = "O número de telefone é obrigatório.")
     private String phoneNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     public ContactEntity() {}
 
@@ -55,6 +60,14 @@ public class ContactEntity implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
