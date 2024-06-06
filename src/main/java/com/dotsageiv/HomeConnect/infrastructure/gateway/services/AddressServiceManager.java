@@ -1,6 +1,7 @@
 package com.dotsageiv.HomeConnect.infrastructure.gateway.services;
 
 import com.dotsageiv.HomeConnect.core.domain.entities.Address;
+import com.dotsageiv.HomeConnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.AddressMapper;
 import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.HomeConnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
@@ -10,29 +11,30 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-public class AddressService {
+public class AddressServiceManager implements AddressService {
     private final UserMapper userMapper;
-    private final UserService userService;
+    private final UserServiceManager userServiceManager;
 
     private final AddressMapper addressMapper;
     private final AddressRepository addressRepository;
 
-    public AddressService(UserMapper userMapper,
-                          UserService userService,
-                          AddressMapper addressMapper,
-                          AddressRepository addressRepository) {
+    public AddressServiceManager(UserMapper userMapper,
+                                 UserServiceManager userServiceManager,
+                                 AddressMapper addressMapper,
+                                 AddressRepository addressRepository) {
         this.userMapper = userMapper;
-        this.userService = userService;
+        this.userServiceManager = userServiceManager;
         this.addressMapper = addressMapper;
         this.addressRepository = addressRepository;
     }
 
+    @Override
     public Address create(UUID userId, Address domainObj) {
         var mappedAddressEntity = addressMapper
                 .toEntity(domainObj);
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         mappedUserEntity.setId(userId);
         mappedAddressEntity.setUserEntity(mappedUserEntity);
@@ -41,6 +43,7 @@ public class AddressService {
                 .save(mappedAddressEntity));
     }
 
+    @Override
     public List<Address> getAll(UUID userId) {
         var addressEntities = addressRepository
                 .findByUserEntityId(userId)
@@ -51,14 +54,15 @@ public class AddressService {
                 .toList();
     }
 
-    public Address getById(UUID userId, UUID addressId) {
+    @Override
+    public Address getById(UUID addressId, UUID userId) {
         var existAddressEntity = addressRepository
                 .findById(addressId)
                 .orElseThrow(() ->
                         new EntityNotFoundNotification("Endereço não existe!"));
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         mappedUserEntity.setId(userId);
         mappedUserEntity.getAddresses().add(existAddressEntity);
@@ -70,14 +74,15 @@ public class AddressService {
                         .get());
     }
 
-    public Address updateById(UUID userId, UUID addresId, Address domainObj) {
+    @Override
+    public Address updateById(UUID addressId, UUID userId, Address domainObj) {
         var mappedAddressEntity = addressMapper
-                .toEntity(getById(userId, addresId));
+                .toEntity(getById(addressId, userId));
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
-        mappedAddressEntity.setId(addresId);
+        mappedAddressEntity.setId(addressId);
         mappedUserEntity.setId(userId);
 
         mappedAddressEntity.setCity(domainObj.city());
@@ -90,9 +95,10 @@ public class AddressService {
                 .save(mappedAddressEntity));
     }
 
-    public void deleteById(UUID userId, UUID addressId) {
+    @Override
+    public void deleteById(UUID addressId, UUID userId) {
         var mappedAddressEntity = addressMapper
-                .toEntity(getById(userId, addressId));
+                .toEntity(getById(addressId, userId));
 
         mappedAddressEntity.setId(addressId);
         addressRepository.deleteById(mappedAddressEntity.getId());

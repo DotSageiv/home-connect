@@ -1,6 +1,7 @@
 package com.dotsageiv.HomeConnect.infrastructure.gateway.services;
 
 import com.dotsageiv.HomeConnect.core.domain.entities.Contact;
+import com.dotsageiv.HomeConnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.ContactMapper;
 import com.dotsageiv.HomeConnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.HomeConnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
@@ -10,28 +11,30 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-public class ContactService {
+public class ContactServiceManager implements ContactService {
     private final UserMapper userMapper;
-    private final UserService userService;
+    private final UserServiceManager userServiceManager;
+
     private final ContactMapper contactMapper;
     private final ContactRepository contactRepository;
 
-    public ContactService(UserMapper userMapper,
-                          UserService userService,
-                          ContactMapper contactMapper,
-                          ContactRepository contactRepository) {
+    public ContactServiceManager(UserMapper userMapper,
+                                 UserServiceManager userServiceManager,
+                                 ContactMapper contactMapper,
+                                 ContactRepository contactRepository) {
         this.userMapper = userMapper;
-        this.userService = userService;
+        this.userServiceManager = userServiceManager;
         this.contactMapper = contactMapper;
         this.contactRepository = contactRepository;
     }
 
+    @Override
     public Contact create(UUID userId, Contact domainObj) {
         var mappedContactEntity = contactMapper
                 .toEntity(domainObj);
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         mappedUserEntity.setId(userId);
         mappedContactEntity.setUserEntity(mappedUserEntity);
@@ -40,6 +43,7 @@ public class ContactService {
                 .save(mappedContactEntity));
     }
 
+    @Override
     public List<Contact> getAll(UUID userId) {
         var contactEntities = contactRepository
                 .findByUserEntityId(userId)
@@ -50,14 +54,15 @@ public class ContactService {
                 .toList();
     }
 
-    public Contact getById(UUID userId, UUID contactId) {
+    @Override
+    public Contact getById(UUID contactId, UUID userId) {
         var existContactEntity = contactRepository
                 .findById(contactId)
                 .orElseThrow(() ->
                         new EntityNotFoundNotification("Contato não existe!"));
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         mappedUserEntity.setId(userId);
         mappedUserEntity.getContacts().add(existContactEntity);
@@ -69,12 +74,13 @@ public class ContactService {
                         .get());
     }
 
-    public Contact updateById(UUID userId, UUID contactId, Contact domainObj) {
+    @Override
+    public Contact updateById(UUID contactId, UUID userId, Contact domainObj) {
         var mappedContactEntity = contactMapper
-                .toEntity(getById(userId, contactId));
+                .toEntity(getById(contactId, userId));
 
         var mappedUserEntity = userMapper
-                .toEntity(userService.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         mappedContactEntity.setId(contactId);
         mappedUserEntity.setId(userId);
@@ -89,9 +95,10 @@ public class ContactService {
                 .save(mappedContactEntity));
     }
 
-    public void deleteById(UUID userId, UUID contactId) {
+    @Override
+    public void deleteById(UUID contactId, UUID userId) {
         var mappedContactEntity = contactMapper
-                .toEntity(getById(userId, contactId));
+                .toEntity(getById(contactId, userId));
 
         mappedContactEntity.setId(contactId);
         contactRepository.deleteById(mappedContactEntity.getId());
