@@ -1,9 +1,9 @@
 package com.dotsageiv.HomeConnect.core.presentation.resources;
 
+import com.dotsageiv.HomeConnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.mappers.ContactDTOMapper;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.requests.ContactRequest;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.responses.ContactResponse;
-import com.dotsageiv.HomeConnect.infrastructure.gateway.services.ContactService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class ContactResource {
     public ResponseEntity<ContactResponse> getById(@PathVariable UUID contactId,
                                                    @PathVariable UUID userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(userId, contactId));
+                .toResponse(service.getById(contactId, userId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -67,7 +67,7 @@ public class ContactResource {
                 .toDomainObj(request);
 
         var updatedDomainObj = service
-                .updateById(userId, contactId, mapperDomainObj);
+                .updateById(contactId, userId, mapperDomainObj);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class ContactResource {
     @DeleteMapping("/{contactId}/{userId}")
     public ResponseEntity<?> deleteById(@PathVariable UUID contactId,
                                         @PathVariable UUID userId) {
-        service.deleteById(userId, contactId);
+        service.deleteById(contactId, userId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

@@ -1,9 +1,9 @@
 package com.dotsageiv.HomeConnect.core.presentation.resources;
 
+import com.dotsageiv.HomeConnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.mappers.AddressDTOMapper;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.requests.AddressRequest;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.responses.AddressResponse;
-import com.dotsageiv.HomeConnect.infrastructure.gateway.services.AddressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +15,8 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("/api/addresses")
 public class AddressResource {
-    private final AddressDTOMapper mapper;
     private final AddressService service;
+    private final AddressDTOMapper mapper;
 
     public AddressResource(AddressDTOMapper mapper, AddressService service) {
         this.mapper = mapper;
@@ -41,7 +41,7 @@ public class AddressResource {
     public ResponseEntity<AddressResponse> getById(@PathVariable UUID addressId,
                                                    @PathVariable UUID userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(userId, addressId));
+                .toResponse(service.getById(addressId, userId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -67,7 +67,7 @@ public class AddressResource {
                 .toDomainObj(request);
 
         var updatedDomainObj = service
-                .updateById(userId, addressId, mapperDomainObj);
+                .updateById(addressId, userId, mapperDomainObj);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class AddressResource {
     @DeleteMapping("/{addressId}/{userId}")
     public ResponseEntity<?> deleteById(@PathVariable UUID addressId,
                                         @PathVariable UUID userId) {
-        service.deleteById(userId, addressId);
+        service.deleteById(addressId, userId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

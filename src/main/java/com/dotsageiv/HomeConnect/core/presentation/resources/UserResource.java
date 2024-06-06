@@ -1,9 +1,9 @@
 package com.dotsageiv.HomeConnect.core.presentation.resources;
 
+import com.dotsageiv.HomeConnect.core.domain.interfaces.UserService;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.mappers.UserDTOMapper;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.requests.UserRequest;
 import com.dotsageiv.HomeConnect.core.presentation.dtos.responses.UserResponse;
-import com.dotsageiv.HomeConnect.infrastructure.gateway.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class UserResource {
         this.mapper = mapper;
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public ResponseEntity<UserResponse> create(@RequestBody UserRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
@@ -36,17 +36,17 @@ public class UserResource {
                 .body(mapper.toResponse(savedDomainObj));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getById(@PathVariable UUID id) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> getById(@PathVariable UUID userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(id));
+                .toResponse(service.getById(userId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(mappedResponse);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<UserResponse> getAll() {
         var domainObjs = service
                 .getAll()
@@ -57,23 +57,23 @@ public class UserResource {
                 .toList();
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<UserResponse> updateById(@PathVariable UUID id,
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponse> updateById(@PathVariable UUID userId,
                                                    @RequestBody UserRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);
 
         var updatedDomainObj = service
-                .updateById(id, mapperDomainObj);
+                .updateById(userId, mapperDomainObj);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(mapper.toResponse(updatedDomainObj));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID id) {
-        service.deleteById(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteById(@PathVariable UUID userId) {
+        service.deleteById(userId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

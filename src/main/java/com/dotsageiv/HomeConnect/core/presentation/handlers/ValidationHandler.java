@@ -15,9 +15,8 @@ public class ValidationHandler {
         var errorMessages = new ArrayList<String>();
 
         ex.getConstraintViolations()
-                .forEach(violation -> {
-                    errorMessages.add(violation.getMessage());
-                });
+                .forEach(violation ->
+                        errorMessages.add(violation.getMessage()));
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
