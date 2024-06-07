@@ -4,6 +4,8 @@ import com.dotsageiv.homeconnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.ContactDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.ContactRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.ContactResponse;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +16,14 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/contacts")
+@AllArgsConstructor
 public class ContactResource {
     private final ContactService service;
     private final ContactDTOMapper mapper;
 
-    public ContactResource(ContactService service, ContactDTOMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
-    }
-
     @PostMapping("/{userId}")
-    public ResponseEntity<ContactResponse> create(@PathVariable UUID userId,
+    public ResponseEntity<ContactResponse> create(@Valid
+                                                  @PathVariable UUID userId,
                                                   @RequestBody ContactRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
@@ -60,7 +59,8 @@ public class ContactResource {
     }
 
     @PutMapping("/{contactId}/{userId}")
-    public ResponseEntity<ContactResponse> updateById(@PathVariable UUID contactId,
+    public ResponseEntity<ContactResponse> updateById(@Valid
+                                                      @PathVariable UUID contactId,
                                                       @PathVariable UUID userId,
                                                       @RequestBody ContactRequest request) {
         var mapperDomainObj = mapper

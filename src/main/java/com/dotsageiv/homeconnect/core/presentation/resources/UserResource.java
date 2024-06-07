@@ -4,6 +4,8 @@ import com.dotsageiv.homeconnect.core.domain.interfaces.UserService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.UserDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.UserRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.UserResponse;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +16,14 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("api/users")
+@AllArgsConstructor
 public class UserResource {
     private final UserService service;
     private final UserDTOMapper mapper;
 
-    public UserResource(UserService service, UserDTOMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
-    }
-
     @PostMapping("/")
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> create(@Valid
+                                               @RequestBody UserRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
 
@@ -58,7 +57,8 @@ public class UserResource {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserResponse> updateById(@PathVariable UUID userId,
+    public ResponseEntity<UserResponse> updateById(@Valid
+                                                   @PathVariable UUID userId,
                                                    @RequestBody UserRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);

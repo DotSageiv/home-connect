@@ -4,6 +4,8 @@ import com.dotsageiv.homeconnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.AddressDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.AddressRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.AddressResponse;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +16,14 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/addresses")
+@AllArgsConstructor
 public class AddressResource {
     private final AddressService service;
     private final AddressDTOMapper mapper;
 
-    public AddressResource(AddressDTOMapper mapper, AddressService service) {
-        this.mapper = mapper;
-        this.service = service;
-    }
-
     @PostMapping("/{userId}")
-    public ResponseEntity<AddressResponse> create(@PathVariable UUID userId,
+    public ResponseEntity<AddressResponse> create(@Valid
+                                                  @PathVariable UUID userId,
                                                   @RequestBody AddressRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
@@ -60,7 +59,8 @@ public class AddressResource {
     }
 
     @PutMapping("/{addressId}/{userId}")
-    public ResponseEntity<AddressResponse> updateById(@PathVariable UUID addressId,
+    public ResponseEntity<AddressResponse> updateById(@Valid
+                                                      @PathVariable UUID addressId,
                                                       @PathVariable UUID userId,
                                                       @RequestBody AddressRequest request) {
         var mapperDomainObj = mapper

@@ -6,14 +6,23 @@ import com.dotsageiv.homeconnect.core.presentation.dtos.responses.AddressRespons
 
 public class AddressDTOMapper {
     public Address toDomainObj(AddressRequest request) {
-        return new Address(request.city(), request.state());
+        return Address.builder()
+                .city(request.city())
+                .state(request.state())
+                .build();
     }
 
     public AddressRequest toRequest(Address domainObj) {
-        return new AddressRequest(domainObj.city(), domainObj.state());
+        return AddressRequest.builder()
+                .city(domainObj.city())
+                .state(domainObj.state())
+                .build();
     }
 
     public AddressResponse toResponse(Address domainObj) {
-        return new AddressResponse(domainObj.city(), domainObj.state());
+        return AddressResponse.builder()
+                .city(domainObj.city())
+                .state(domainObj.state())
+                .build();
     }
 }

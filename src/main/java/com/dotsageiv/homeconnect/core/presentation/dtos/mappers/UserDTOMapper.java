@@ -6,22 +6,28 @@ import com.dotsageiv.homeconnect.core.presentation.dtos.responses.UserResponse;
 
 public class UserDTOMapper {
     public User toDomainObj(UserRequest request) {
-        return new User(request.cpf(),
-                request.fullName(),
-                request.username(),
-                request.password());
+        return User.builder()
+                .cpf(request.cpf())
+                .fullName(request.fullName())
+                .username(request.username())
+                .password(request.password())
+                .build();
     }
 
     public UserRequest toRequest(User domainObj) {
-        return new UserRequest(domainObj.cpf(),
-                domainObj.fullName(),
-                domainObj.username(),
-                domainObj.password());
+        return UserRequest.builder()
+                .cpf(domainObj.cpf())
+                .fullName(domainObj.fullName())
+                .username(domainObj.username())
+                .password(domainObj.password())
+                .build();
     }
 
     public UserResponse toResponse(User domainObj) {
-        return new UserResponse(domainObj.cpf(),
-                domainObj.fullName(),
-                domainObj.username());
+        return UserResponse.builder()
+                .cpf(domainObj.cpf())
+                .fullName(domainObj.fullName())
+                .username(domainObj.username())
+                .build();
     }
 }
