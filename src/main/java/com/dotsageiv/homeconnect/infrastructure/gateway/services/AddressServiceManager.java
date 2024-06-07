@@ -6,27 +6,19 @@ import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.AddressMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.AddressRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
+@AllArgsConstructor
 public class AddressServiceManager implements AddressService {
     private final UserMapper userMapper;
     private final UserServiceManager userServiceManager;
 
     private final AddressMapper addressMapper;
     private final AddressRepository addressRepository;
-
-    public AddressServiceManager(UserMapper userMapper,
-                                 UserServiceManager userServiceManager,
-                                 AddressMapper addressMapper,
-                                 AddressRepository addressRepository) {
-        this.userMapper = userMapper;
-        this.userServiceManager = userServiceManager;
-        this.addressMapper = addressMapper;
-        this.addressRepository = addressRepository;
-    }
 
     @Override
     public Address create(UUID userId, Address domainObj) {

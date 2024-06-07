@@ -5,10 +5,16 @@ import com.dotsageiv.homeconnect.infrastructure.persistence.entities.ContactEnti
 
 public class ContactMapper {
     public Contact toDomainObj(ContactEntity entity) {
-        return new Contact(entity.getEmail(), entity.getPhoneNumber());
+        return Contact.builder()
+                .email(entity.getEmail())
+                .phoneNumber(entity.getPhoneNumber())
+                .build();
     }
 
     public ContactEntity toEntity(Contact domainObj) {
-        return new ContactEntity(domainObj.email(), domainObj.phoneNumber());
+        return ContactEntity.builder()
+                .email(domainObj.email())
+                .phoneNumber(domainObj.phoneNumber())
+                .build();
     }
 }

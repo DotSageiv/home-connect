@@ -5,16 +5,20 @@ import com.dotsageiv.homeconnect.infrastructure.persistence.entities.UserEntity;
 
 public class UserMapper {
     public User toDomainObj(UserEntity entity) {
-        return new User(entity.getCpf(),
-                entity.getFullName(),
-                entity.getUsername(),
-                entity.getPassword());
+        return User.builder()
+                .cpf(entity.getCpf())
+                .fullName(entity.getFullName())
+                .username(entity.getUsername())
+                .password(entity.getPassword())
+                .build();
     }
 
     public UserEntity toEntity(User domainObj) {
-        return new UserEntity(domainObj.cpf(),
-                domainObj.fullName(),
-                domainObj.username(),
-                domainObj.password());
+        return UserEntity.builder()
+                .cpf(domainObj.cpf())
+                .fullName(domainObj.fullName())
+                .username(domainObj.username())
+                .password(domainObj.password())
+                .build();
     }
 }

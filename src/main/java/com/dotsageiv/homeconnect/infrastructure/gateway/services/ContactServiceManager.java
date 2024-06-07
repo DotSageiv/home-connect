@@ -6,27 +6,19 @@ import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.ContactMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.ContactRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
+@AllArgsConstructor
 public class ContactServiceManager implements ContactService {
     private final UserMapper userMapper;
     private final UserServiceManager userServiceManager;
 
     private final ContactMapper contactMapper;
     private final ContactRepository contactRepository;
-
-    public ContactServiceManager(UserMapper userMapper,
-                                 UserServiceManager userServiceManager,
-                                 ContactMapper contactMapper,
-                                 ContactRepository contactRepository) {
-        this.userMapper = userMapper;
-        this.userServiceManager = userServiceManager;
-        this.contactMapper = contactMapper;
-        this.contactRepository = contactRepository;
-    }
 
     @Override
     public Contact create(UUID userId, Contact domainObj) {

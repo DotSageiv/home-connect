@@ -5,18 +5,15 @@ import com.dotsageiv.homeconnect.core.domain.interfaces.UserService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
+@AllArgsConstructor
 public class UserServiceManager implements UserService {
     private final UserMapper mapper;
     private final UserRepository repository;
-
-    public UserServiceManager(UserMapper mapper, UserRepository repository) {
-        this.mapper = mapper;
-        this.repository = repository;
-    }
 
     @Override
     public User create(User domainObj) {

@@ -5,10 +5,16 @@ import com.dotsageiv.homeconnect.infrastructure.persistence.entities.AddressEnti
 
 public class AddressMapper {
     public Address toDomainObj(AddressEntity entity) {
-        return new Address(entity.getCity(), entity.getState());
+        return Address.builder()
+                .city(entity.getCity())
+                .state(entity.getState())
+                .build();
     }
 
     public AddressEntity toEntity(Address domainObj) {
-        return new AddressEntity(domainObj.city(), domainObj.state());
+        return AddressEntity.builder()
+                .city(domainObj.city())
+                .state(domainObj.state())
+                .build();
     }
 }
