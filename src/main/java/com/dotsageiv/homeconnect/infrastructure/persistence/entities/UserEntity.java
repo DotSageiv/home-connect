@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,8 +42,8 @@ public class UserEntity implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    private Set<ContactEntity> contacts = new HashSet<>();
+    private Set<ContactEntity> contacts;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    private Set<AddressEntity> addresses = new HashSet<>();
+    private Set<AddressEntity> addresses;
 }

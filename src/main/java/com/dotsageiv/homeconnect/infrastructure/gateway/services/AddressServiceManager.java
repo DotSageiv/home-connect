@@ -22,14 +22,13 @@ public class AddressServiceManager implements AddressService {
 
     @Override
     public Address create(UUID userId, Address domainObj) {
-        var mappedAddressEntity = addressMapper
-                .toEntity(domainObj);
-
         var mappedUserEntity = userMapper
-                .toEntity(userServiceManager.getById(userId));
+                .toEntity(userId, userServiceManager.getById(userId));
 
-        mappedUserEntity.setId(userId);
-        mappedAddressEntity.setUserEntity(mappedUserEntity);
+        var mappedAddressEntity = addressMapper
+                .toEntity(domainObj, mappedUserEntity);
+
+        mappedUserEntity.getAddresses().add(mappedAddressEntity);
 
         return addressMapper.toDomainObj(addressRepository
                 .save(mappedAddressEntity));
@@ -68,19 +67,16 @@ public class AddressServiceManager implements AddressService {
 
     @Override
     public Address updateById(UUID addressId, UUID userId, Address domainObj) {
-        var mappedAddressEntity = addressMapper
-                .toEntity(getById(addressId, userId));
-
         var mappedUserEntity = userMapper
-                .toEntity(userServiceManager.getById(userId));
+                .toEntity(userId, userServiceManager.getById(userId));
+
+        var mappedAddressEntity = addressMapper
+                .toEntity(getById(addressId, userId), mappedUserEntity);
 
         mappedAddressEntity.setId(addressId);
-        mappedUserEntity.setId(userId);
-
         mappedAddressEntity.setCity(domainObj.city());
         mappedAddressEntity.setState(domainObj.state());
 
-        mappedAddressEntity.setUserEntity(mappedUserEntity);
         mappedUserEntity.getAddresses().add(mappedAddressEntity);
 
         return addressMapper.toDomainObj(addressRepository

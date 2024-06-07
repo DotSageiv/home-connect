@@ -22,14 +22,13 @@ public class ContactServiceManager implements ContactService {
 
     @Override
     public Contact create(UUID userId, Contact domainObj) {
-        var mappedContactEntity = contactMapper
-                .toEntity(domainObj);
-
         var mappedUserEntity = userMapper
-                .toEntity(userServiceManager.getById(userId));
+                .toEntity(userId, userServiceManager.getById(userId));
 
-        mappedUserEntity.setId(userId);
-        mappedContactEntity.setUserEntity(mappedUserEntity);
+        var mappedContactEntity = contactMapper
+                .toEntity(domainObj, mappedUserEntity);
+
+        mappedUserEntity.getContacts().add(mappedContactEntity);
 
         return contactMapper.toDomainObj(contactRepository
                 .save(mappedContactEntity));
@@ -68,21 +67,18 @@ public class ContactServiceManager implements ContactService {
 
     @Override
     public Contact updateById(UUID contactId, UUID userId, Contact domainObj) {
-        var mappedContactEntity = contactMapper
-                .toEntity(getById(contactId, userId));
-
         var mappedUserEntity = userMapper
-                .toEntity(userServiceManager.getById(userId));
+                .toEntity(userId, userServiceManager.getById(userId));
+
+        var mappedContactEntity = contactMapper
+                .toEntity(getById(contactId, userId), mappedUserEntity);
 
         mappedContactEntity.setId(contactId);
-        mappedUserEntity.setId(userId);
-
         mappedContactEntity.setEmail(domainObj.email());
         mappedContactEntity.setPhoneNumber(domainObj.phoneNumber());
 
-        mappedContactEntity.setUserEntity(mappedUserEntity);
         mappedUserEntity.getContacts().add(mappedContactEntity);
-
+        
         return contactMapper.toDomainObj(contactRepository
                 .save(mappedContactEntity));
     }
