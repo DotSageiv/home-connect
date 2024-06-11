@@ -1,9 +1,9 @@
 package com.dotsageiv.homeconnect.core.domain.interfaces;
 
-import com.dotsageiv.homeconnect.core.domain.entities.Address;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.dotsageiv.homeconnect.core.domain.entities.Address;
 
 public interface AddressService {
     Address create(UUID userId, Address domainObj);

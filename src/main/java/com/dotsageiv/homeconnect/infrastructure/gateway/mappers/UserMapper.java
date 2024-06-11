@@ -1,10 +1,10 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.mappers;
 
-import com.dotsageiv.homeconnect.core.domain.entities.User;
-import com.dotsageiv.homeconnect.infrastructure.persistence.entities.UserEntity;
-
 import java.util.HashSet;
 import java.util.UUID;
+
+import com.dotsageiv.homeconnect.core.domain.entities.User;
+import com.dotsageiv.homeconnect.infrastructure.persistence.entities.UserEntity;
 
 public class UserMapper {
     public User toDomainObj(UserEntity entity) {

@@ -1,16 +1,17 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.StreamSupport;
+
 import com.dotsageiv.homeconnect.core.domain.entities.Address;
 import com.dotsageiv.homeconnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.AddressMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.AddressRepository;
-import lombok.AllArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class AddressServiceManager implements AddressService {

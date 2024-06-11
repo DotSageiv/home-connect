@@ -1,14 +1,15 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
+import java.util.UUID;
+import java.util.stream.StreamSupport;
+
 import com.dotsageiv.homeconnect.core.domain.entities.User;
 import com.dotsageiv.homeconnect.core.domain.interfaces.UserService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.UserRepository;
-import lombok.AllArgsConstructor;
 
-import java.util.UUID;
-import java.util.stream.StreamSupport;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UserServiceManager implements UserService {

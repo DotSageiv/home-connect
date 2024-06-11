@@ -1,9 +1,9 @@
 package com.dotsageiv.homeconnect.core.domain.interfaces;
 
-import com.dotsageiv.homeconnect.core.domain.entities.Contact;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.dotsageiv.homeconnect.core.domain.entities.Contact;
 
 public interface ContactService {
     Contact create(UUID userId, Contact domainObj);

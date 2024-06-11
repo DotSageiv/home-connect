@@ -1,8 +1,8 @@
 package com.dotsageiv.homeconnect.core.domain.interfaces;
 
-import com.dotsageiv.homeconnect.core.domain.entities.User;
-
 import java.util.UUID;
+
+import com.dotsageiv.homeconnect.core.domain.entities.User;
 
 public interface UserService {
     User create(User domainObj);

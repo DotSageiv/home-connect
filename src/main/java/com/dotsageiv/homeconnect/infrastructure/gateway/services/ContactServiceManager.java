@@ -1,16 +1,17 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.StreamSupport;
+
 import com.dotsageiv.homeconnect.core.domain.entities.Contact;
 import com.dotsageiv.homeconnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.ContactMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.ContactRepository;
-import lombok.AllArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ContactServiceManager implements ContactService {
@@ -78,7 +79,7 @@ public class ContactServiceManager implements ContactService {
         mappedContactEntity.setPhoneNumber(domainObj.phoneNumber());
 
         mappedUserEntity.getContacts().add(mappedContactEntity);
-        
+
         return contactMapper.toDomainObj(contactRepository
                 .save(mappedContactEntity));
     }

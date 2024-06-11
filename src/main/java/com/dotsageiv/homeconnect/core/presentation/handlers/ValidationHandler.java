@@ -1,12 +1,13 @@
 package com.dotsageiv.homeconnect.core.presentation.handlers;
 
-import jakarta.validation.ConstraintViolationException;
+import java.util.ArrayList;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class ValidationHandler {
