@@ -1,18 +1,17 @@
 package com.dotsageiv.homeconnect.core.domain.interfaces;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.dotsageiv.homeconnect.core.domain.entities.Address;
 
+import java.util.List;
+
 public interface AddressService {
-    Address create(UUID userId, Address domainObj);
+    Address create(Long userId, Address domainObj);
 
-    Address getById(UUID addressId, UUID userId);
+    Address getById(Long addressId, Long userId);
 
-    List<Address> getAll(UUID userId);
+    List<Address> getAll(Long userId);
 
-    Address updateById(UUID adressId, UUID userId, Address domainObj);
+    Address updateById(Long adressId, Long userId, Address domainObj);
 
-    void deleteById(UUID addressId, UUID userId);
+    void deleteById(Long addressId, Long userId);
 }

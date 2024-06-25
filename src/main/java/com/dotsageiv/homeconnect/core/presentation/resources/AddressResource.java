@@ -1,27 +1,17 @@
 package com.dotsageiv.homeconnect.core.presentation.resources;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dotsageiv.homeconnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.AddressDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.AddressRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.AddressResponse;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/addresses")
@@ -31,8 +21,7 @@ public class AddressResource {
     private final AddressDTOMapper mapper;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<AddressResponse> create(@Valid
-                                                  @PathVariable UUID userId,
+    public ResponseEntity<AddressResponse> create(@Valid @PathVariable Long userId,
                                                   @RequestBody AddressRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
@@ -46,8 +35,8 @@ public class AddressResource {
     }
 
     @GetMapping("/{addressId}/{userId}")
-    public ResponseEntity<AddressResponse> getById(@PathVariable UUID addressId,
-                                                   @PathVariable UUID userId) {
+    public ResponseEntity<AddressResponse> getById(@PathVariable Long addressId,
+                                                   @PathVariable Long userId) {
         var mappedResponse = mapper
                 .toResponse(service.getById(addressId, userId));
 
@@ -57,7 +46,7 @@ public class AddressResource {
     }
 
     @GetMapping("/{userId}")
-    public List<AddressResponse> getAll(@PathVariable UUID userId) {
+    public List<AddressResponse> getAll(@PathVariable Long userId) {
         var domainObjs = service
                 .getAll(userId)
                 .spliterator();
@@ -68,9 +57,8 @@ public class AddressResource {
     }
 
     @PutMapping("/{addressId}/{userId}")
-    public ResponseEntity<AddressResponse> updateById(@Valid
-                                                      @PathVariable UUID addressId,
-                                                      @PathVariable UUID userId,
+    public ResponseEntity<AddressResponse> updateById(@Valid @PathVariable Long addressId,
+                                                      @PathVariable Long userId,
                                                       @RequestBody AddressRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);
@@ -84,8 +72,8 @@ public class AddressResource {
     }
 
     @DeleteMapping("/{addressId}/{userId}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID addressId,
-                                        @PathVariable UUID userId) {
+    public ResponseEntity<?> deleteById(@PathVariable Long addressId,
+                                        @PathVariable Long userId) {
         service.deleteById(addressId, userId);
 
         return ResponseEntity

@@ -1,24 +1,12 @@
 package com.dotsageiv.homeconnect.infrastructure.persistence.entities;
 
-import java.io.Serializable;
-import java.util.Set;
-import java.util.UUID;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.Set;
 
 @Table(name = "USERS")
 @Data
@@ -29,8 +17,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Size(min = 14, max = 14, message = "O CPF deve conter exatamente 14 números.")
     @Column(unique = true, nullable = false, length = 14)

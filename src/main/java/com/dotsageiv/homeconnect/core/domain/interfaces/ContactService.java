@@ -1,18 +1,17 @@
 package com.dotsageiv.homeconnect.core.domain.interfaces;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.dotsageiv.homeconnect.core.domain.entities.Contact;
 
+import java.util.List;
+
 public interface ContactService {
-    Contact create(UUID userId, Contact domainObj);
+    Contact create(Long userId, Contact domainObj);
 
-    Contact getById(UUID contactId, UUID userId);
+    Contact getById(Long contactId, Long userId);
 
-    List<Contact> getAll(UUID userId);
+    List<Contact> getAll(Long userId);
 
-    Contact updateById(UUID contactId, UUID userId, Contact domainObj);
+    Contact updateById(Long contactId, Long userId, Contact domainObj);
 
-    void deleteById(UUID contactId, UUID userId);
+    void deleteById(Long contactId, Long userId);
 }

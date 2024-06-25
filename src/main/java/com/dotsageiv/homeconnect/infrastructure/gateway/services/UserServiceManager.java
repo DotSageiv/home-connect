@@ -1,15 +1,13 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
 import com.dotsageiv.homeconnect.core.domain.entities.User;
 import com.dotsageiv.homeconnect.core.domain.interfaces.UserService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.UserRepository;
-
 import lombok.AllArgsConstructor;
+
+import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 public class UserServiceManager implements UserService {
@@ -37,7 +35,7 @@ public class UserServiceManager implements UserService {
     }
 
     @Override
-    public User getById(UUID userId) {
+    public User getById(Long userId) {
         var existEntity = repository
                 .findById(userId)
                 .orElseThrow(() ->
@@ -47,7 +45,7 @@ public class UserServiceManager implements UserService {
     }
 
     @Override
-    public User updateById(UUID userId, User domainObj) {
+    public User updateById(Long userId, User domainObj) {
         var mappedEntity = mapper
                 .toEntity(getById(userId));
 
@@ -62,7 +60,7 @@ public class UserServiceManager implements UserService {
     }
 
     @Override
-    public void deleteById(UUID userId) {
+    public void deleteById(Long userId) {
         var mappedEntity = mapper
                 .toEntity(getById(userId));
 

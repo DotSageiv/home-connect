@@ -1,27 +1,17 @@
 package com.dotsageiv.homeconnect.core.presentation.resources;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dotsageiv.homeconnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.ContactDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.ContactRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.ContactResponse;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -31,8 +21,7 @@ public class ContactResource {
     private final ContactDTOMapper mapper;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ContactResponse> create(@Valid
-                                                  @PathVariable UUID userId,
+    public ResponseEntity<ContactResponse> create(@Valid @PathVariable Long userId,
                                                   @RequestBody ContactRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
@@ -46,8 +35,8 @@ public class ContactResource {
     }
 
     @GetMapping("/{contactId}/{userId}")
-    public ResponseEntity<ContactResponse> getById(@PathVariable UUID contactId,
-                                                   @PathVariable UUID userId) {
+    public ResponseEntity<ContactResponse> getById(@PathVariable Long contactId,
+                                                   @PathVariable Long userId) {
         var mappedResponse = mapper
                 .toResponse(service.getById(contactId, userId));
 
@@ -57,7 +46,7 @@ public class ContactResource {
     }
 
     @GetMapping("/{userId}")
-    public List<ContactResponse> getAll(@PathVariable UUID userId) {
+    public List<ContactResponse> getAll(@PathVariable Long userId) {
         var domainObjs = service
                 .getAll(userId)
                 .spliterator();
@@ -69,8 +58,8 @@ public class ContactResource {
 
     @PutMapping("/{contactId}/{userId}")
     public ResponseEntity<ContactResponse> updateById(@Valid
-                                                      @PathVariable UUID contactId,
-                                                      @PathVariable UUID userId,
+                                                      @PathVariable Long contactId,
+                                                      @PathVariable Long userId,
                                                       @RequestBody ContactRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);
@@ -84,8 +73,8 @@ public class ContactResource {
     }
 
     @DeleteMapping("/{contactId}/{userId}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID contactId,
-                                        @PathVariable UUID userId) {
+    public ResponseEntity<?> deleteById(@PathVariable Long contactId,
+                                        @PathVariable Long userId) {
         service.deleteById(contactId, userId);
 
         return ResponseEntity

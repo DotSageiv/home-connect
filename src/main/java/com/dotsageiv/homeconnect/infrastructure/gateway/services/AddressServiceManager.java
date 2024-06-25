@@ -1,17 +1,15 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
 import com.dotsageiv.homeconnect.core.domain.entities.Address;
 import com.dotsageiv.homeconnect.core.domain.interfaces.AddressService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.AddressMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.AddressRepository;
-
 import lombok.AllArgsConstructor;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 public class AddressServiceManager implements AddressService {
@@ -22,7 +20,7 @@ public class AddressServiceManager implements AddressService {
     private final AddressRepository addressRepository;
 
     @Override
-    public Address create(UUID userId, Address domainObj) {
+    public Address create(Long userId, Address domainObj) {
         var mappedUserEntity = userMapper
                 .toEntity(userId, userServiceManager.getById(userId));
 
@@ -36,7 +34,7 @@ public class AddressServiceManager implements AddressService {
     }
 
     @Override
-    public List<Address> getAll(UUID userId) {
+    public List<Address> getAll(Long userId) {
         var addressEntities = addressRepository
                 .findByUserEntityId(userId)
                 .spliterator();
@@ -47,7 +45,7 @@ public class AddressServiceManager implements AddressService {
     }
 
     @Override
-    public Address getById(UUID addressId, UUID userId) {
+    public Address getById(Long addressId, Long userId) {
         var existAddressEntity = addressRepository
                 .findById(addressId)
                 .orElseThrow(() ->
@@ -67,7 +65,7 @@ public class AddressServiceManager implements AddressService {
     }
 
     @Override
-    public Address updateById(UUID addressId, UUID userId, Address domainObj) {
+    public Address updateById(Long addressId, Long userId, Address domainObj) {
         var mappedUserEntity = userMapper
                 .toEntity(userId, userServiceManager.getById(userId));
 
@@ -85,7 +83,7 @@ public class AddressServiceManager implements AddressService {
     }
 
     @Override
-    public void deleteById(UUID addressId, UUID userId) {
+    public void deleteById(Long addressId, Long userId) {
         var mappedAddressEntity = addressMapper
                 .toEntity(getById(addressId, userId));
 

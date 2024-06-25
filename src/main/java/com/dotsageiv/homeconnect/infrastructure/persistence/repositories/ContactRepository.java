@@ -1,12 +1,10 @@
 package com.dotsageiv.homeconnect.infrastructure.persistence.repositories;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.dotsageiv.homeconnect.infrastructure.persistence.entities.ContactEntity;
 import org.springframework.data.repository.CrudRepository;
 
-import com.dotsageiv.homeconnect.infrastructure.persistence.entities.ContactEntity;
+import java.util.List;
 
-public interface ContactRepository extends CrudRepository<ContactEntity, UUID> {
-    List<ContactEntity> findByUserEntityId(UUID userId);
+public interface ContactRepository extends CrudRepository<ContactEntity, Long> {
+    List<ContactEntity> findByUserEntityId(Long userId);
 }

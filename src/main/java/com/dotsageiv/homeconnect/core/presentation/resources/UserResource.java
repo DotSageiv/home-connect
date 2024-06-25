@@ -1,27 +1,17 @@
 package com.dotsageiv.homeconnect.core.presentation.resources;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dotsageiv.homeconnect.core.domain.interfaces.UserService;
 import com.dotsageiv.homeconnect.core.presentation.dtos.mappers.UserDTOMapper;
 import com.dotsageiv.homeconnect.core.presentation.dtos.requests.UserRequest;
 import com.dotsageiv.homeconnect.core.presentation.dtos.responses.UserResponse;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("api/users")
@@ -31,8 +21,7 @@ public class UserResource {
     private final UserDTOMapper mapper;
 
     @PostMapping("/")
-    public ResponseEntity<UserResponse> create(@Valid
-                                               @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody UserRequest request) {
         var mappedDomainObj = mapper
                 .toDomainObj(request);
 
@@ -45,7 +34,7 @@ public class UserResource {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getById(@PathVariable UUID userId) {
+    public ResponseEntity<UserResponse> getById(@PathVariable Long userId) {
         var mappedResponse = mapper
                 .toResponse(service.getById(userId));
 
@@ -67,7 +56,7 @@ public class UserResource {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponse> updateById(@Valid
-                                                   @PathVariable UUID userId,
+                                                   @PathVariable Long userId,
                                                    @RequestBody UserRequest request) {
         var mapperDomainObj = mapper
                 .toDomainObj(request);
@@ -81,7 +70,7 @@ public class UserResource {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID userId) {
+    public ResponseEntity<?> deleteById(@PathVariable Long userId) {
         service.deleteById(userId);
 
         return ResponseEntity

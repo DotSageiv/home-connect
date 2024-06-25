@@ -1,17 +1,15 @@
 package com.dotsageiv.homeconnect.infrastructure.gateway.services;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.StreamSupport;
-
 import com.dotsageiv.homeconnect.core.domain.entities.Contact;
 import com.dotsageiv.homeconnect.core.domain.interfaces.ContactService;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.ContactMapper;
 import com.dotsageiv.homeconnect.infrastructure.gateway.mappers.UserMapper;
 import com.dotsageiv.homeconnect.infrastructure.persistence.notifications.EntityNotFoundNotification;
 import com.dotsageiv.homeconnect.infrastructure.persistence.repositories.ContactRepository;
-
 import lombok.AllArgsConstructor;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 public class ContactServiceManager implements ContactService {
@@ -22,7 +20,7 @@ public class ContactServiceManager implements ContactService {
     private final ContactRepository contactRepository;
 
     @Override
-    public Contact create(UUID userId, Contact domainObj) {
+    public Contact create(Long userId, Contact domainObj) {
         var mappedUserEntity = userMapper
                 .toEntity(userId, userServiceManager.getById(userId));
 
@@ -36,7 +34,7 @@ public class ContactServiceManager implements ContactService {
     }
 
     @Override
-    public List<Contact> getAll(UUID userId) {
+    public List<Contact> getAll(Long userId) {
         var contactEntities = contactRepository
                 .findByUserEntityId(userId)
                 .spliterator();
@@ -47,7 +45,7 @@ public class ContactServiceManager implements ContactService {
     }
 
     @Override
-    public Contact getById(UUID contactId, UUID userId) {
+    public Contact getById(Long contactId, Long userId) {
         var existContactEntity = contactRepository
                 .findById(contactId)
                 .orElseThrow(() ->
@@ -67,7 +65,7 @@ public class ContactServiceManager implements ContactService {
     }
 
     @Override
-    public Contact updateById(UUID contactId, UUID userId, Contact domainObj) {
+    public Contact updateById(Long contactId, Long userId, Contact domainObj) {
         var mappedUserEntity = userMapper
                 .toEntity(userId, userServiceManager.getById(userId));
 
@@ -85,7 +83,7 @@ public class ContactServiceManager implements ContactService {
     }
 
     @Override
-    public void deleteById(UUID contactId, UUID userId) {
+    public void deleteById(Long contactId, Long userId) {
         var mappedContactEntity = contactMapper
                 .toEntity(getById(contactId, userId));
 
