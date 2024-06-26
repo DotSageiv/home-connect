@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("api/users")
+@CrossOrigin("*")
 @AllArgsConstructor
 public class UserResource {
     private final UserService service;

@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/addresses")
+@CrossOrigin("*")
 @AllArgsConstructor
 public class AddressResource {
     private final AddressService service;

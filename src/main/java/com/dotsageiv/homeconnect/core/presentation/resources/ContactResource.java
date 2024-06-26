@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/contacts")
+@CrossOrigin("*")
 @AllArgsConstructor
 public class ContactResource {
     private final ContactService service;
