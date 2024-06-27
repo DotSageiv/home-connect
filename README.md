@@ -2,6 +2,10 @@
 
 The HomeConnectAPI is an academic project dedicated to developing a CRM (Customer Relationship Management) system for a real estate agency. This system allows users to perform essential operations such as data registration, reading, updating, and deletion within the platform.
 
+#### SCHEMA:
+
+![HomeConnectAPI](https://github.com/WebKross/HomeConnectAPI/assets/159083802/ad0abe36-633b-4044-ab24-0efe803bd181)
+
 #### FEATURES:
 
 1. Spring Boot 3.0.0: Modules including `` Spring Data (JPA), Spring MVC, Spring Validation & Swagger ``
@@ -12,7 +16,7 @@ The HomeConnectAPI is an academic project dedicated to developing a CRM (Custome
 
 #### EXECUTION
 
-1. Clone the project from the Git repository: ``git@github.com:WebKross/home-connect.git ``
+1. Clone the project from the Git repository: `` git@github.com:WebKross/HomeConnectAPI.git ``
 
 2. Install an IDE of your choice and necessary extensions for development: `` Docker & MySQL Workbench ``
 
