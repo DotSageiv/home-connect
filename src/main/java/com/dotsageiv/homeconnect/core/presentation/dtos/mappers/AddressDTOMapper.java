@@ -19,6 +19,15 @@ public class AddressDTOMapper {
                 .build();
     }
 
+    public AddressResponse toResponse(Long userId, Address domainObj) {
+        return AddressResponse.builder()
+                .addressId(domainObj.id())
+                .userId(userId)
+                .city(domainObj.city())
+                .state(domainObj.state())
+                .build();
+    }
+
     public AddressResponse toResponse(Address domainObj) {
         return AddressResponse.builder()
                 .city(domainObj.city())

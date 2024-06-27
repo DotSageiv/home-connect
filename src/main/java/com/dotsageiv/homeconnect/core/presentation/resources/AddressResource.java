@@ -32,14 +32,14 @@ public class AddressResource {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(mapper.toResponse(savedDomainObj));
+                .body(mapper.toResponse(userId, savedDomainObj));
     }
 
     @GetMapping("/{addressId}/{userId}")
     public ResponseEntity<AddressResponse> getById(@PathVariable Long addressId,
                                                    @PathVariable Long userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(addressId, userId));
+                .toResponse(userId, service.getById(addressId, userId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -53,7 +53,7 @@ public class AddressResource {
                 .spliterator();
 
         return StreamSupport.stream(domainObjs, false)
-                .map(mapper::toResponse)
+                .map(element -> mapper.toResponse(userId, element))
                 .toList();
     }
 
@@ -69,7 +69,7 @@ public class AddressResource {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mapper.toResponse(updatedDomainObj));
+                .body(mapper.toResponse(userId, updatedDomainObj));
     }
 
     @DeleteMapping("/{addressId}/{userId}")

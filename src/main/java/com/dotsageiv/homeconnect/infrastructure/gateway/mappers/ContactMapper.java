@@ -7,6 +7,7 @@ import com.dotsageiv.homeconnect.infrastructure.persistence.entities.UserEntity;
 public class ContactMapper {
     public Contact toDomainObj(ContactEntity entity) {
         return Contact.builder()
+                .id(entity.getId())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
                 .build();
@@ -21,6 +22,7 @@ public class ContactMapper {
 
     public ContactEntity toEntity(Contact domainObj, UserEntity entity) {
         return ContactEntity.builder()
+                .id(domainObj.id())
                 .email(domainObj.email())
                 .phoneNumber(domainObj.phoneNumber())
                 .userEntity(entity)

@@ -7,6 +7,7 @@ import com.dotsageiv.homeconnect.infrastructure.persistence.entities.UserEntity;
 public class AddressMapper {
     public Address toDomainObj(AddressEntity entity) {
         return Address.builder()
+                .id(entity.getId())
                 .city(entity.getCity())
                 .state(entity.getState())
                 .build();
@@ -21,6 +22,7 @@ public class AddressMapper {
 
     public AddressEntity toEntity(Address domainObj, UserEntity entity) {
         return AddressEntity.builder()
+                .id(domainObj.id())
                 .city(domainObj.city())
                 .state(domainObj.state())
                 .userEntity(entity)

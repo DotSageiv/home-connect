@@ -32,14 +32,14 @@ public class ContactResource {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(mapper.toResponse(savedDomainObj));
+                .body(mapper.toResponse(userId, savedDomainObj));
     }
 
     @GetMapping("/{contactId}/{userId}")
     public ResponseEntity<ContactResponse> getById(@PathVariable Long contactId,
                                                    @PathVariable Long userId) {
         var mappedResponse = mapper
-                .toResponse(service.getById(contactId, userId));
+                .toResponse(userId, service.getById(contactId, userId));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -53,7 +53,7 @@ public class ContactResource {
                 .spliterator();
 
         return StreamSupport.stream(domainObjs, false)
-                .map(mapper::toResponse)
+                .map(element -> mapper.toResponse(userId, element))
                 .toList();
     }
 
@@ -70,7 +70,7 @@ public class ContactResource {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mapper.toResponse(updatedDomainObj));
+                .body(mapper.toResponse(userId, updatedDomainObj));
     }
 
     @DeleteMapping("/{contactId}/{userId}")

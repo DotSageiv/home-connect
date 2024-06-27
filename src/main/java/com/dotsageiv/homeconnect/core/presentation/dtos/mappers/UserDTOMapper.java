@@ -25,6 +25,7 @@ public class UserDTOMapper {
 
     public UserResponse toResponse(User domainObj) {
         return UserResponse.builder()
+                .id(domainObj.id())
                 .cpf(domainObj.cpf())
                 .fullName(domainObj.fullName())
                 .username(domainObj.username())

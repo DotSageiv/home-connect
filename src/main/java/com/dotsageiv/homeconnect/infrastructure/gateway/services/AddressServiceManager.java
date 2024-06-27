@@ -22,7 +22,7 @@ public class AddressServiceManager implements AddressService {
     @Override
     public Address create(Long userId, Address domainObj) {
         var mappedUserEntity = userMapper
-                .toEntity(userId, userServiceManager.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         var mappedAddressEntity = addressMapper
                 .toEntity(domainObj, mappedUserEntity);
@@ -67,7 +67,7 @@ public class AddressServiceManager implements AddressService {
     @Override
     public Address updateById(Long addressId, Long userId, Address domainObj) {
         var mappedUserEntity = userMapper
-                .toEntity(userId, userServiceManager.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         var mappedAddressEntity = addressMapper
                 .toEntity(getById(addressId, userId), mappedUserEntity);

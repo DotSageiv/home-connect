@@ -22,7 +22,7 @@ public class ContactServiceManager implements ContactService {
     @Override
     public Contact create(Long userId, Contact domainObj) {
         var mappedUserEntity = userMapper
-                .toEntity(userId, userServiceManager.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         var mappedContactEntity = contactMapper
                 .toEntity(domainObj, mappedUserEntity);
@@ -67,7 +67,7 @@ public class ContactServiceManager implements ContactService {
     @Override
     public Contact updateById(Long contactId, Long userId, Contact domainObj) {
         var mappedUserEntity = userMapper
-                .toEntity(userId, userServiceManager.getById(userId));
+                .toEntity(userServiceManager.getById(userId));
 
         var mappedContactEntity = contactMapper
                 .toEntity(getById(contactId, userId), mappedUserEntity);

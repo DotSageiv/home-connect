@@ -19,8 +19,10 @@ public class ContactDTOMapper {
                 .build();
     }
 
-    public ContactResponse toResponse(Contact domainObj) {
+    public ContactResponse toResponse(Long userId, Contact domainObj) {
         return ContactResponse.builder()
+                .userId(userId)
+                .contactId(domainObj.id())
                 .email(domainObj.email())
                 .phoneNumber(domainObj.phoneNumber())
                 .build();
