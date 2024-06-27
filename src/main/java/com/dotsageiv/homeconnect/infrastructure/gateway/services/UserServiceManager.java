@@ -53,7 +53,6 @@ public class UserServiceManager implements UserService {
         mappedEntity.setCpf(domainObj.cpf());
         mappedEntity.setFullName(domainObj.fullName());
         mappedEntity.setUsername(domainObj.username());
-        mappedEntity.setPassword(domainObj.password());
 
         return mapper.toDomainObj(repository
                 .save(mappedEntity));

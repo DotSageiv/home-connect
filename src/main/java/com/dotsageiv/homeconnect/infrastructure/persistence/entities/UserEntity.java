@@ -35,10 +35,12 @@ public class UserEntity implements Serializable {
     @NotBlank(message = "O nome de usuário é obrigatório.")
     private String username;
 
-    @NotBlank(message = "A senha é obrigatório.")
-    @Column(nullable = false, length = 10)
-    @Size(max = 10, message = "A senha deve conter pelo menos 10 caracteres")
-    private String password;
+    /*
+        @NotBlank(message = "A senha é obrigatório.")
+        @Column(nullable = false, length = 10)
+        @Size(max = 10, message = "A senha deve conter pelo menos 10 caracteres")
+        private String password;
+     */
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private Set<ContactEntity> contacts;

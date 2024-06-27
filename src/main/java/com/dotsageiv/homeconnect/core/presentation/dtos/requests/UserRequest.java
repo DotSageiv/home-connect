@@ -4,4 +4,4 @@ import lombok.Builder;
 
 @Builder
 public record UserRequest(String cpf, String fullName,
-                          String username, String password) {}
+                          String username) {}

@@ -10,7 +10,6 @@ public class UserDTOMapper {
                 .cpf(request.cpf())
                 .fullName(request.fullName())
                 .username(request.username())
-                .password(request.password())
                 .build();
     }
 
@@ -19,7 +18,6 @@ public class UserDTOMapper {
                 .cpf(domainObj.cpf())
                 .fullName(domainObj.fullName())
                 .username(domainObj.username())
-                .password(domainObj.password())
                 .build();
     }
 

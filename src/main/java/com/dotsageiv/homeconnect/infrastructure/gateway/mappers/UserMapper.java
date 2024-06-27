@@ -12,7 +12,6 @@ public class UserMapper {
                 .cpf(entity.getCpf())
                 .fullName(entity.getFullName())
                 .username(entity.getUsername())
-                .password(entity.getPassword())
                 .build();
     }
 
@@ -22,7 +21,6 @@ public class UserMapper {
                 .cpf(domainObj.cpf())
                 .fullName(domainObj.fullName())
                 .username(domainObj.username())
-                .password(domainObj.password())
                 .contacts(new HashSet<>())
                 .addresses(new HashSet<>())
                 .build();
