@@ -20,11 +20,11 @@ The HomeConnectAPI is an academic project dedicated to developing a CRM (Custome
 
 2. Install an IDE of your choice and necessary extensions for development: `` Docker & MySQL Workbench ``
 
-3. Start Docker and open MySQL Workbench, initiating the server on: `` port 3306 ``
+3. Start Docker-Compose and open MySQL Workbench, initiating the server on: `` port 3306 ``
 
 4. Run the Spring Boot application by starting the main class of the project: `HomeConnectApplication`
 
-5. Once the application is running, open a web browser and enter the following URL: ``localhost:8080/swagger-ui/index.html ``
+5. Once the application is running, open a web browser and enter the following URL: ``localhost:8081/swagger-ui/index.html ``
 
 #### AUTHOR
 
