@@ -4,7 +4,7 @@ The HomeConnectAPI is an academic project dedicated to developing a CRM (Custome
 
 #### SCHEMA:
 
-![HomeConnectAPI](https://github.com/WebKross/HomeConnectAPI/assets/159083802/ad0abe36-633b-4044-ab24-0efe803bd181)
+![HomeConnectAPI](https://github.com/WebKross/HomeConnectAPI/assets/159083802/7da0d0ee-d0df-4628-8de7-4a61dd101409)
 
 #### FEATURES:
 
